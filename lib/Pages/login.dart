@@ -11,6 +11,22 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool isLogin = false;
   String _name = "";
+  final _formKey = GlobalKey<FormState>();
+
+  credentialCheckerLogin(BuildContext context) async{
+    if(_formKey.currentState!.validate()){
+      setState(()  {
+        isLogin = true;
+      });
+      await Future.delayed(Duration(seconds: 3));
+      await Navigator.pushNamed(context, MyRoutes.homePageRoute);
+      setState(() {
+        isLogin = false;
+      });
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -37,68 +53,75 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: "Enter Name",
-                        labelText: "Name",
-                        prefixIcon: Icon(Icons.accessibility_new),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: "Enter Email",
+                          labelText: "Email",
+                          prefixIcon: Icon(CupertinoIcons.mail_solid),
+                        ),
+                        validator: (value){
+                          if(value!.isEmpty){
+                            return "Email Required";
+                          }
+                          return null;
+                        },
+                        onChanged: (value){
+                          _name = value;
+                          setState(() {
+                          });
+                        },
                       ),
-                      onChanged: (value){
-                        _name = value;
-                        setState(() {
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          hintText: "Enter Password",
+                          labelText: "Password",
+                          prefixIcon: Icon(Icons.remove_red_eye),
+                        ),
+                        validator: (value){
+                          if(value!.isEmpty){
+                            return "Password required";
+                          } else if(value.length<6){
+                            return "At least 6 character required";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
 
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        hintText: "Enter Email",
-                        labelText: "Email",
-                        prefixIcon: Icon(Icons.attach_email),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    // ElevatedButton(onPressed: ()=> Navigator.pushNamed(context, MyRoutes.HomePage),
-                    //     child: const Text("Login",),
-                    //   style: TextButton.styleFrom(minimumSize: Size(150, 40)),
-                    // ),
-                    InkWell(
-                      onTap:() async{
-                        setState(()  {
-                          isLogin = true;
-                        });
-                        await Future.delayed(Duration(seconds: 5));
-                        Navigator.pushNamed(context, MyRoutes.HomePage);
-                      },
-                      child: AnimatedContainer(
-                        alignment: Alignment.center,
-                        duration: const Duration(seconds: 5),
-                        width: isLogin? 50 :150,
-                        height: isLogin ? 50 :50,
-                        child: isLogin
-                            ? const Icon(CupertinoIcons.check_mark, color: Colors.white,)
-                            : const Text(
-                                "Login",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurple,
-                          borderRadius: isLogin?BorderRadius.circular(50): BorderRadius.circular(5),
+                      Material(
+                        borderRadius: isLogin?BorderRadius.circular(50): BorderRadius.circular(5),
+                        color: Colors.deepPurple,
+                        child: InkWell(
+                          onTap:() => credentialCheckerLogin(context),
+                          child: AnimatedContainer(
+                            alignment: Alignment.center,
+                            duration: const Duration(seconds: 3),
+                            width: isLogin? 50 :150,
+                            height: isLogin ? 50 :50,
+                            child: isLogin
+                                ? const Icon(CupertinoIcons.check_mark, color: Colors.white,)
+                                : const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
