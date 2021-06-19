@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tutorials/widget/mydrawer.dart';
 
 class Home extends StatelessWidget {
   // This widget is the root of your application.
@@ -7,15 +8,15 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Istiyak 1st Flutter app" ),
-        backgroundColor: Colors.red,
+        title: Text("Istiyak" ),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Center(
         child: Container(
           child: Text("Hello Istiyak"),
         ),
       ),
-      drawer: Drawer(),
+      drawer: MyDrawer(),
     );
   }
 }
