@@ -1,5 +1,5 @@
 class CatalogModel {
-  static final items = [
+  static  List<Item> items = [
      Item(
           id: 1,
           name: "Dumbbell",
@@ -19,5 +19,29 @@ class Item {
   final String image;
 
   Item({required this.id, required this.name, required this.desc, required this.price, required this.color, required this.image});
+
+  //For mapping the json data
+factory Item.fromMap(Map<String, dynamic> map){
+  return  Item(
+    //Item class var:Database var//
+      id :  map["id"],
+      name : map['name'],
+      price : map['price'],
+      desc : map['desc'],
+      color : map['color'],
+      image : map['image']
+    );
+
+}
+
+    // toMap() =>  {
+    //   'id': id,
+    //   'name': name,
+    //   'desc': desc,
+    //   'price': price,
+    //   'color': color,
+    //   'image': image,
+    // };
+
 
 }
